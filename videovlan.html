@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>VLAN: Konsep Dasar & Implementasi Jaringan Virtual</title>
+    <meta name="description" content="Pembahasan lengkap tentang Virtual Local Area Network (VLAN) — isolasi broadcast, keamanan, efisiensi jaringan, dan implementasi switch berdasarkan dokumen dan video referensi.">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #f0f4f8;
+            font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.5;
+            color: #1e293b;
+            padding: 2rem 1rem;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 2rem;
+            box-shadow: 0 25px 40px -12px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            transition: all 0.2s;
+        }
+
+        /* Header / Hero */
+        .hero {
+            background: linear-gradient(135deg, #0f172a 0%, #1e2a3e 100%);
+            padding: 2rem 2rem 1.8rem 2rem;
+            color: white;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 1.9rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            margin-bottom: 0.5rem;
+        }
+
+        .hero p {
+            font-size: 1rem;
+            opacity: 0.85;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .badge {
+            display: inline-block;
+            background: #38bdf8;
+            color: #0f172a;
+            font-weight: 600;
+            font-size: 0.75rem;
+            padding: 0.2rem 0.8rem;
+            border-radius: 40px;
+            margin-bottom: 1rem;
+        }
+
+        /* Video wrapper */
+        .video-section {
+            padding: 2rem 2rem 0 2rem;
+            background: #ffffff;
+        }
+
+        .video-wrapper {
+            position: relative;
+            width: 100%;
+            border-radius: 1.5rem;
+            overflow: hidden;
+            background: #000;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .video-wrapper iframe {
+            display: block;
+            width: 100%;
+            height: 100%;
+            aspect-ratio: 16 / 9;
+            border: none;
+        }
+
+        .video-caption {
+            font-size: 0.85rem;
+            color: #475569;
+            margin-top: 0.75rem;
+            text-align: center;
+            border-bottom: 1px solid #e2e8f0;
+            padding-bottom: 1.5rem;
+        }
+
+        /* Konten penjelasan (dari file docx) */
+        .explanation {
+            padding: 0 2rem 2rem 2rem;
+        }
+
+        .section-title {
+            font-size: 1.75rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #1e293b, #2d3a4b);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            margin: 1.5rem 0 1rem 0;
+            border-left: 5px solid #0f67b3;
+            padding-left: 1rem;
+        }
+
+        .section-title:first-of-type {
+            margin-top: 0.5rem;
+        }
+
+        .intro-text {
+            background: #f8fafc;
+            padding: 1.4rem 1.8rem;
+            border-radius: 1.2rem;
+            margin-bottom: 2rem;
+            border: 1px solid #e2edff;
+            font-size: 1rem;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.02);
+        }
+
+        .timeline-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            margin: 1.8rem 0 1.5rem 0;
+        }
+
+        .timeline-card {
+            background: white;
+            border-radius: 1.2rem;
+            border: 1px solid #e9eff5;
+            overflow: hidden;
+            transition: transform 0.1s ease, box-shadow 0.2s;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.02);
+        }
+
+        .timeline-card:hover {
+            box-shadow: 0 12px 20px -12px rgba(0, 0, 0, 0.12);
+            border-color: #cbdde9;
+        }
+
+        .card-header {
+            background: #f1f5f9;
+            padding: 0.9rem 1.5rem;
+            border-bottom: 1px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .duration {
+            background: #0f3b5f;
+            color: white;
+            font-weight: 700;
+            font-family: monospace;
+            padding: 0.25rem 1rem;
+            border-radius: 40px;
+            font-size: 0.85rem;
+            letter-spacing: 0.3px;
+        }
+
+        .card-header h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin: 0;
+            color: #0c4a6e;
+        }
+
+        .card-body {
+            padding: 1.3rem 1.5rem;
+            color: #2c3e50;
+        }
+
+        .card-body p {
+            margin-bottom: 0.75rem;
+        }
+
+        .tech-note {
+            background: #eef2ff;
+            padding: 1rem 1.4rem;
+            border-radius: 1rem;
+            margin: 1.2rem 0 0.5rem 0;
+            font-size: 0.9rem;
+            border-left: 4px solid #2563eb;
+            color: #1e293b;
+        }
+
+        .benefit-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-top: 1rem;
+            list-style: none;
+        }
+
+        .benefit-list li {
+            background: #eef2ff;
+            padding: 0.4rem 1rem;
+            border-radius: 2rem;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: #1e40af;
+        }
+
+        hr {
+            margin: 1.5rem 0;
+            border: none;
+            height: 2px;
+            background: linear-gradient(90deg, #cbd5e1, transparent);
+        }
+
+        footer {
+            font-size: 0.75rem;
+            text-align: center;
+            padding: 1.5rem 0 1rem 0;
+            border-top: 1px solid #e2e8f0;
+            margin-top: 1.8rem;
+            color: #5b6e8c;
+        }
+
+        @media (max-width: 680px) {
+            .container {
+                border-radius: 1.2rem;
+            }
+            .hero h1 {
+                font-size: 1.5rem;
+            }
+            .video-section, .explanation {
+                padding-left: 1.2rem;
+                padding-right: 1.2rem;
+            }
+            .card-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .section-title {
+                font-size: 1.4rem;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="hero">
+        <span class="badge">📡 Virtual Local Area Network</span>
+        <h1>VLAN: Optimasi Broadcast & Isolasi Jaringan</h1>
+        <p>Pahami bagaimana VLAN mengelompokkan perangkat secara logis, meningkatkan keamanan, dan mengelola lalu lintas broadcast tanpa perubahan fisik</p>
+    </div>
+
+    <!-- Bagian Video YouTube (menggunakan iframe dengan parameter si yang diberikan user) -->
+    <div class="video-section">
+        <div class="video-wrapper">
+            <iframe 
+                src="https://www.youtube.com/embed/bOOu6xGl3us?si=aCe4C88-LfjKVPMa" 
+                title="YouTube video player - Apa itu VLAN? Penjelasan Virtual Local Area Network"
+                frameborder="0" 
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                referrerpolicy="strict-origin-when-cross-origin" 
+                allowfullscreen>
+            </iframe>
+        </div>
+        <div class="video-caption">
+            🎥 Video: "Apa itu VLAN?" — Penjelasan konsep pengelompokan logis, broadcast domain, dan implementasi switch.
+        </div>
+    </div>
+
+    <!-- Penjelasan dari file "video 1.docx" - detail dan durasi -->
+    <div class="explanation">
+        <div class="section-title">📘 Ringkasan Konsep Dasar VLAN</div>
+        <div class="intro-text">
+            <strong>VLAN (Virtual Local Area Network)</strong> memungkinkan perangkat yang tersebar secara fisik di lokasi berbeda untuk dikelompokkan secara logis dalam jaringan virtual yang terpisah. Pendekatan ini sangat membantu mengelola <strong>lalu lintas broadcast</strong> yang dapat memperlambat kinerja jaringan jika tidak dikontrol, terutama ketika jumlah perangkat bertambah. Dengan VLAN, lalu lintas broadcast diisolasi antar departemen sehingga meningkatkan <strong>keamanan</strong> dan <strong>efisiensi jaringan</strong> tanpa perlu perubahan fisik yang rumit dan mahal.
+        </div>
+
+        <!-- Timeline / Durasi dari dokumen -->
+        <div class="section-title">⏱️ Pembahasan Berdasarkan Durasi Video</div>
+        <div class="timeline-grid">
+
+            <!-- Durasi 00:00 - 03:00 -->
+            <div class="timeline-card">
+                <div class="card-header">
+                    <span class="duration">⏰ 00:00 – 03:00</span>
+                    <h3>🏢 Pengelompokan Logis & Contoh Kasus Gedung Kantor</h3>
+                </div>
+                <div class="card-body">
+                    <p>Pada bagian awal, video menjelaskan <strong>apa itu VLAN</strong> dan bagaimana VLAN mengelompokkan perangkat secara logis tanpa memperhatikan lokasi fisik. Dalam contoh kasus sebuah gedung kantor dengan beberapa departemen (misalnya HR, Finance, IT) yang terhubung dalam satu LAN fisik yang sama, <strong>broadcast dari satu departemen diterima oleh semua perangkat lain</strong> — menciptakan noise dan potensi kebocoran data.</p>
+                    <p>VLAN memecahkan masalah ini dengan memisahkan domain broadcast secara virtual: meskipun perangkat terhubung ke switch fisik yang sama, mereka bisa berada di VLAN berbeda dan tidak saling mendengar broadcast satu sama lain.</p>
+                </div>
+            </div>
+
+            <!-- Durasi 03:00 - 05:00 -->
+            <div class="timeline-card">
+                <div class="card-header">
+                    <span class="duration">⏰ 03:00 – 05:00</span>
+                    <h3>📈 Masalah Broadcast & Solusi Tradisional yang Merepotkan</h3>
+                </div>
+                <div class="card-body">
+                    <p>Ketika jumlah perangkat dalam satu LAN bertambah, lalu lintas broadcast meningkat drastis dan dapat memperlambat jaringan. Solusi tradisional seperti memindahkan kabel atau memisahkan perangkat secara fisik ke switch/router yang berbeda membutuhkan perubahan infrastruktur yang rumit, mahal, dan tidak fleksibel.</p>
+                    <p>Di sinilah <strong>switch yang mendukung fitur VLAN</strong> menjadi solusi praktis: cukup mengonfigurasi port switch ke dalam VLAN tertentu, tanpa perlu merombak tata letak kabel atau memindahkan workstation. Solusi ini hemat biaya, cepat, dan dapat diskalakan seiring pertumbuhan perusahaan.</p>
+                    <div class="tech-note">
+                        💡 <strong>Fakta teknis:</strong> Broadcast storm dapat menghabiskan 50%+ bandwidth dalam skenario LAN flat. VLAN membatasi broadcast hanya pada anggota VLAN yang sama → menjaga performa dan stabilitas.
+                    </div>
+                </div>
+            </div>
+
+            <!-- Durasi 05:00 - 07:00 -->
+            <div class="timeline-card">
+                <div class="card-header">
+                    <span class="duration">⏰ 05:00 – 07:00</span>
+                    <h3>⚙️ Implementasi VLAN: Alokasi Port & Keamanan</h3>
+                </div>
+                <div class="card-body">
+                    <p>Bagian ini mendeskripsikan implementasi teknis: membuat beberapa VLAN untuk masing-masing departemen (misal VLAN 10 untuk Sales, VLAN 20 untuk Engineering, VLAN 30 untuk HR). Lalu lintas broadcast terisolasi per VLAN. Pada switch, setiap port dapat dialokasikan ke VLAN tertentu (<em>access port</em>) atau dikonfigurasi sebagai <em>trunk</em> untuk membawa banyak VLAN antar switch.</p>
+                    <p>Alasan utama penggunaan VLAN tidak hanya untuk mengelola broadcast, tetapi juga <strong>meningkatkan keamanan</strong> (membatasi komunikasi antar VLAN hanya melalui router/firewall) dan menyederhanakan administrasi jaringan. Dengan VLAN, growth jaringan tidak lagi terhambat oleh broadcast flood, serta perubahan grup pengguna cukup dilakukan via software tanpa perubahan fisik.</p>
+                    <ul class="benefit-list">
+                        <li>🔒 Isolasi lalu lintas departemen</li>
+                        <li>📉 Broadcast domain lebih kecil</li>
+                        <li>⚡ Efisiensi bandwidth</li>
+                        <li>🔄 Fleksibilitas tanpa re-kabel</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bagian ringkasan arsitektur switch port berdasarkan deskripsi -->
+        <div class="section-title">🔧 Aspek Teknis: VLAN & Switch Port Allocation</div>
+        <div style="background: #f9fbfe; border-radius: 1.2rem; padding: 1.2rem 1.5rem; margin-bottom: 1rem;">
+            <p>Berdasarkan penjelasan pada rentang 05:00-07:00, implementasi VLAN pada switch melibatkan:</p>
+            <ul style="margin: 0.8rem 0 0 1.2rem; display: flex; flex-direction: column; gap: 0.4rem;">
+                <li><strong>✔ Access Port:</strong> Port switch yang terasosiasi dengan satu VLAN saja (misal, untuk workstation atau printer). Frame yang masuk/keluar tidak memiliki tag VLAN.</li>
+                <li><strong>✔ Trunk Port:</strong> Port yang membawa traffic beberapa VLAN secara simultan menggunakan tagging (IEEE 802.1Q). Ideal untuk menghubungkan switch ke switch atau switch ke router.</li>
+                <li><strong>✔ VLAN Segmentation:</strong> Setiap VLAN = domain broadcast terpisah. Perangkat di VLAN A tidak akan melihat broadcast dari VLAN B, sehingga meningkatkan keamanan dan mengurangi beban CPU perangkat.</li>
+            </ul>
+            <div class="tech-note" style="margin-top: 0.8rem;">
+                🧠 <strong>Broadcast isolation example:</strong> Dalam kantor dengan 200 perangkat tanpa VLAN, satu broadcast ARP akan dikirim ke 200 host. Dengan VLAN menjadi 4 grup @50 host, broadcast hanya menjangkau 50 host. Performa dan keamanan meningkat drastis.
+            </div>
+        </div>
+
+        <!-- Keuntungan tambahan yang disebutkan dalam file -->
+        <div class="section-title">🎯 Mengapa VLAN Krusial dalam Manajemen Jaringan Modern</div>
+        <div style="display: flex; flex-wrap: wrap; gap: 1.2rem; margin: 0.5rem 0 0.8rem 0;">
+            <div style="flex: 1; min-width: 200px; background: #ffffff; border-radius: 1rem; padding: 1rem; border: 1px solid #eef2ff;">
+                <h4 style="display: flex; gap: 0.5rem; margin-bottom: 0.6rem;">📦 Isolasi Broadcast</h4>
+                <p style="font-size: 0.9rem;">Mencegah broadcast storm memperlambat seluruh jaringan, ideal untuk VoIP, streaming, dan aplikasi real-time.</p>
+            </div>
+            <div style="flex: 1; min-width: 200px; background: #ffffff; border-radius: 1rem; padding: 1rem; border: 1px solid #eef2ff;">
+                <h4 style="display: flex; gap: 0.5rem; margin-bottom: 0.6rem;">🔐 Keamanan</h4>
+                <p style="font-size: 0.9rem;">Traffic antar VLAN membutuhkan routing melalui firewall atau Layer 3 switch, sehingga kebijakan keamanan dapat diterapkan.</p>
+            </div>
+            <div style="flex: 1; min-width: 200px; background: #ffffff; border-radius: 1rem; padding: 1rem; border: 1px solid #eef2ff;">
+                <h4 style="display: flex; gap: 0.5rem; margin-bottom: 0.6rem;">💸 Efisiensi Biaya</h4>
+                <p style="font-size: 0.9rem;">Mengurangi kebutuhan switch/router fisik tambahan, konfigurasi dilakukan secara terpusat tanpa perubahan kabel.</p>
+            </div>
+        </div>
+
+        <!-- Catatan penutup dari materi file docx (asli) -->
+        <hr />
+        <p style="font-size: 0.9rem; background:#fafcff; padding: 0.8rem 1rem; border-radius: 1rem; color: #2c3e50;">
+        📄 <strong>Sumber referensi:</strong> Dokumen <em>“video 1.docx”</em> — Menjelaskan secara rinci bahwa VLAN mengisolasi lalu lintas broadcast antar departemen, meningkatkan keamanan dan efisiensi jaringan tanpa perubahan fisik yang rumit. Kisaran waktu 00:00 s.d 07:00 menjabarkan mulai dari konsep pengelompokan logis, masalah broadcast, hingga implementasi port switch beserta alokasi VLAN. Dengan pertumbuhan jaringan, VLAN menjadi kebutuhan fundamental bagi network engineer.
+        </p>
+        <footer>
+            © 2026 — Materi edukasi jaringan komputer | Berdasarkan video YouTube & dokumen teknis VLAN
+        </footer>
+    </div>
+</div>
+</body>
+</html>
