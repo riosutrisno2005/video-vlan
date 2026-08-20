@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>VLAN - Virtual Local Area Network</title>
+    <style>
+        /* --- RESET & BASE --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f5f7fa;
+            color: #000000;
+            line-height: 1.6;
+            padding: 25px 20px;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: #ffffff;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+            overflow: hidden;
+            padding: 35px 50px;
+        }
+
+        /* --- SEMUA TEKS WARNA HITAM --- */
+        body, p, li, h1, h2, h3, h4, th, td, .table-caption, figcaption, .footer-note,
+        strong, b, i, span, div, pre, code, .container *, .card, .video-caption, .duration, footer {
+            color: #000000 !important;
+        }
+
+        /* --- FONT SIZES (Rasio 1.618, acuan paragraf 12pt) --- */
+        p {
+            font-size: 12pt;
+            margin-bottom: 0.5rem;
+            text-align: justify;
+            text-indent: 2em;
+            line-height: 1.6;
+        }
+        li {
+            font-size: 12pt;
+            margin: 0.2rem 0;
+            text-align: justify;
+            line-height: 1.6;
+        }
+        h3 {
+            font-size: 16pt;
+            font-weight: 600;
+            margin: 18px 0 8px 0;
+            letter-spacing: 0.2px;
+        }
+        h2 {
+            font-size: 22pt;
+            font-weight: 600;
+            margin: 24px 0 10px 0;
+            padding-bottom: 0;
+            border-bottom: none;
+            letter-spacing: 0.3px;
+        }
+        h1 {
+            font-size: 28pt;
+            font-weight: 700;
+            border-left: none;
+            padding-left: 0;
+            margin-bottom: 16px;
+            letter-spacing: 0.3px;
+            line-height: 1.2;
+        }
+
+        /* Elemen pendukung */
+        .card {
+            background: transparent;
+            padding: 0;
+            border-radius: 0;
+            box-shadow: none;
+            margin-bottom: 16px;
+            border: none;
+        }
+        .video-caption {
+            font-size: 10pt;
+            text-align: center;
+            margin-top: 6px;
+            font-style: italic;
+            font-weight: 500;
+        }
+        .duration {
+            background: #f0f2f5;
+            padding: 2px 10px;
+            border-radius: 16px;
+            font-size: 10.5pt;
+            font-weight: 600;
+            display: inline-block;
+            margin-bottom: 4px;
+            border: none;
+        }
+        iframe {
+            width: 100%;
+            max-width: 560px;
+            height: auto;
+            aspect-ratio: 16 / 9;
+            display: block;
+            margin: 0 auto;
+            border-radius: 10px;
+            border: none;
+        }
+        footer {
+            font-size: 9pt;
+            text-align: center;
+            margin-top: 6px;
+        }
+
+        /* --- RESPONSIVE --- */
+        @media (max-width: 768px) {
+            .container {
+                padding: 25px 22px;
+            }
+            h1 { font-size: 24pt; }
+            h2 { font-size: 19pt; }
+            h3 { font-size: 14pt; }
+            p, li { font-size: 11.5pt; }
+            .duration { font-size: 10pt; }
+        }
+        @media (max-width: 480px) {
+            .container {
+                padding: 16px 14px;
+                border-radius: 12px;
+            }
+            h1 { font-size: 20pt; margin-bottom: 12px; }
+            h2 { font-size: 16pt; margin: 18px 0 8px 0; }
+            h3 { font-size: 12pt; margin: 14px 0 6px 0; }
+            p, li { font-size: 11pt; }
+            .duration { font-size: 9.5pt; padding: 1px 8px; }
+        }
+
+        /* --- STYLE LAINNYA (tanpa garis) --- */
+        ul, ol {
+            margin: 0.3rem 0 0.5rem 1.8rem;
+        }
+        hr {
+            display: none;
+        }
+        i {
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+
+    <div class="card">
+        <h1>Virtual Local Area Network (VLAN)</h1>
+        <p>Materi: konsep dasar, manfaat, dan implementasi VLAN.</p>
+    </div>
+
+    <!-- Video YouTube -->
+    <div class="card">
+        <iframe
+            width="560"
+            height="315"
+            src="https://www.youtube.com/embed/bOOu6xGl3us?si=aCe4C88-LfjKVPMa"
+            title="YouTube video player - VLAN"
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            referrerpolicy="strict-origin-when-cross-origin"
+            allowfullscreen>
+        </iframe>
+        <div class="video-caption">Video: Apa itu VLAN? (YouTube)</div>
+    </div>
+
+    <!-- Penjelasan dari file DOCX -->
+    <div class="card">
+        <h2>Penjelasan VLAN</h2>
+        <p><strong>VLAN (Virtual Local Area Network)</strong> memungkinkan perangkat yang tersebar secara fisik di lokasi berbeda untuk dikelompokkan secara logis dalam jaringan virtual yang terpisah. VLAN membantu mengelola lalu lintas broadcast yang dapat memperlambat kinerja jaringan jika tidak dikontrol, terutama ketika jumlah perangkat bertambah. Dengan VLAN, lalu lintas broadcast diisolasi antar departemen sehingga meningkatkan keamanan dan efisiensi jaringan tanpa perlu perubahan fisik yang rumit dan mahal.</p>
+
+        <h3>Rincian berdasarkan durasi video referensi:</h3>
+
+        <div>
+            <span class="duration">00:00 - 03:00</span>
+            <p><strong>Pengelompokan logis & contoh kasus:</strong> VLAN mengelompokkan perangkat tanpa memperhatikan lokasi fisik. Contoh: satu gedung kantor dengan beberapa departemen dalam LAN yang sama, broadcast dari satu departemen diterima semua perangkat lain.</p>
+        </div>
+
+        <div>
+            <span class="duration">03:00 - 05:00</span>
+            <p><strong>Masalah broadcast & solusi tradisional:</strong> Broadcast memperlambat jaringan saat perangkat bertambah. Solusi tradisional (memindahkan perangkat secara fisik) merepotkan. Solusi praktis: menggunakan switch yang mendukung VLAN.</p>
+        </div>
+
+        <div>
+            <span class="duration">05:00 - 07:00</span>
+            <p><strong>Implementasi VLAN:</strong> Membuat beberapa VLAN untuk masing-masing departemen sehingga broadcast terisolasi. Port switch dialokasikan ke VLAN tertentu. Alasan utama: meningkatkan keamanan dan mengelola broadcast traffic seiring pertumbuhan jaringan.</p>
+        </div>
+
+        <h3>Poin Penting</h3>
+        <ul>
+            <li>Isolasi broadcast -> performa lebih stabil.</li>
+            <li>Keamanan lebih baik karena lalu lintas antar VLAN butuh router/firewall.</li>
+            <li>Fleksibel: perubahan grup cukup via konfigurasi, tanpa merombak kabel.</li>
+        </ul>
+    </div>
+
+    <footer></footer>
+</div>
+</body>
+</html>
